@@ -83,14 +83,14 @@ public class PullRequestFacade {
     try {
       GitHub github;
       if (config.isProxyConnectionEnabled()) {
-        github = new GitHubBuilder().withProxy(config.getHttpProxy()).withEndpoint(config.endpoint()).withOAuthToken(config.oauth()).build();
+        github = new GitHubBuilder().withProxy(config.getHttpProxy()).withEndpoint(config.endpoint()).withOAuthToken(config.oauth(), config.githubAppUser()).build();
       } else {
-        github = new GitHubBuilder().withEndpoint(config.endpoint()).withOAuthToken(config.oauth()).build();
+        github = new GitHubBuilder().withEndpoint(config.endpoint()).withOAuthToken(config.oauth(), config.githubAppUser()).build();
       }
       setGhRepo(github.getRepository(config.repository()));
       setPr(ghRepo.getPullRequest(pullRequestNumber));
       LOG.info("Starting analysis of pull request: " + pr.getHtmlUrl());
-      myself = github.getMyself().getLogin();
+      myself = github.getUser(config.githubAppUser()).getLogin();
       loadExistingReviewComments();
       patchPositionMappingByFile = mapPatchPositionsToLines(pr);
     } catch (IOException e) {

@@ -136,6 +136,14 @@ public class GitHubPluginConfiguration {
     return !settings.getBoolean(GitHubPlugin.GITHUB_DISABLE_INLINE_COMMENTS);
   }
 
+  //Appending [bot] as github add this to app login name
+  public String githubAppUser() {
+        if (settings.getString(GitHubPlugin.GITHUB_SONAR_APP_NAME) != null && !settings.getString(GitHubPlugin.GITHUB_SONAR_APP_NAME).isEmpty()) {
+            return settings.getString(GitHubPlugin.GITHUB_SONAR_APP_NAME) + "[bot]";
+        }
+        return null;
+    }
+
   /**
    * Checks if a proxy was passed with command line parameters or configured in the system.
    * If only an HTTP proxy was configured then it's properties are copied to the HTTPS proxy (like SonarQube configuration)
